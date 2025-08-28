@@ -337,7 +337,7 @@
       });
     
       // Печать всех текстовых узлов внутри контейнера
-      function typeAllText(container, charsPerStep = 10, interval = 10) {
+      function typeAllText(container, charsPerStep = 20, interval = 10) {
         if (container.dataset.typed) return;
         container.dataset.typed = '1';
     
@@ -380,7 +380,7 @@
           if (open) {
             content.classList.add('open');
             if (icon) icon.textContent = '👍 🔼';
-            typeAllText(content, 10, 10); // печатает ВЕСЬ раздел, ×10 быстрее
+            typeAllText(content, 20, 10); // печатает ВЕСЬ раздел, ×20 быстрее
           } else {
             content.classList.remove('open');
             if (icon) icon.textContent = '🫵 🔽';
