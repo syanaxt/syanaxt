@@ -311,7 +311,6 @@
       });
     })();
 
-
     // Avatar fallback on error
     (function(){
       const img = document.getElementById('avatar-img');
@@ -322,52 +321,55 @@
       });
     })();
 
-    // Accordion behavior + typewriter-on-open
+    // Typewriter for intro + accordion (печатает весь текст раздела)
     (function () {
-      function typeLine(el, speed = 12, delay = 0) {
-        if (el.dataset.typed) return;
-        const txt = el.textContent;
-        el.textContent = '';
-        el.dataset.typed = '1';
-        setTimeout(() => {
-          let i = 0;
-          const t = setInterval(() => {
-            el.textContent += txt[i++] || '';
-            if (i >= txt.length) clearInterval(t);
-          }, speed);
-        }, delay);
+      // Интро: печать при загрузке
+      document.addEventListener('DOMContentLoaded', () => {
+        const intro = document.getElementById('intro');
+        if (!intro) return;
+        const text = intro.textContent.trim();
+        intro.textContent = '';
+        let i = 0;
+        const t = setInterval(() => {
+          intro.textContent += text.slice(i, i += 3); // ×3 быстрее
+          if (i >= text.length) clearInterval(t);
+        }, 10);
+      });
+    
+      // Печать всех текстовых узлов внутри контейнера
+      function typeAllText(container, charsPerStep = 3, interval = 10) {
+        if (container.dataset.typed) return;
+        container.dataset.typed = '1';
+    
+        const walker = document.createTreeWalker(
+          container,
+          NodeFilter.SHOW_TEXT,
+          {
+            acceptNode(node) {
+              const s = node.textContent.replace(/\s+/g, ' ');
+              return s.trim().length ? NodeFilter.FILTER_ACCEPT : NodeFilter.FILTER_REJECT;
+            }
+          }
+        );
+    
+        const nodes = [];
+        while (walker.nextNode()) nodes.push(walker.currentNode);
+    
+        const originals = nodes.map(n => n.textContent);
+        nodes.forEach(n => (n.textContent = ''));
+    
+        let i = 0, j = 0;
+        const t = setInterval(() => {
+          if (i >= nodes.length) return clearInterval(t);
+          const node = nodes[i];
+          const text = originals[i];
+          node.textContent += text.slice(j, j + charsPerStep);
+          j += charsPerStep;
+          if (j >= text.length) { i++; j = 0; }
+        }, interval);
       }
-
-          // Typewriter for intro text
-    document.addEventListener('DOMContentLoaded', () => {
-      const intro = document.getElementById('intro');
-      const text = intro.textContent.trim();
-      intro.textContent = '';
-      let i = 0;
-      const t = setInterval(() => {
-        intro.textContent += text[i++];
-        if (i >= text.length) clearInterval(t);
-      }, 20); // скорость печати, меньше = быстрее
-    });
     
-      function startTypingIn(container) {
-        // берём текстовые элементы и фильтруем
-        const nodes = Array.from(container.querySelectorAll('h3, h4, p, li, div'));
-        const targets = nodes.filter(n => {
-          const text = n.textContent.trim();
-          if (text.length < 6) return false;
-          if (n.children.length > 0) return false;              // не трогаем h4 с иконками/картинками
-          if (n.tagName === 'DIV' && !n.classList.contains('text-[13px]')) return false; // из div оставляем только наши маленькие тексты
-          return true;
-        });
-    
-        let delay = 0;
-        for (const el of targets) {
-          typeLine(el, 10, delay);
-          delay += Math.min(800, 12 * el.textContent.trim().length);
-        }
-      }
-    
+      // Аккордеоны
       document.querySelectorAll('section[data-section]').forEach(section => {
         const btn = section.querySelector('button[data-accordion]');
         const content = section.querySelector('.accordion-content');
@@ -378,7 +380,7 @@
           if (open) {
             content.classList.add('open');
             if (icon) icon.textContent = '👍 🔼';
-            startTypingIn(content);                     // печать при раскрытии
+            typeAllText(content, 3, 10); // печатает ВЕСЬ раздел, ×3 быстрее
           } else {
             content.classList.remove('open');
             if (icon) icon.textContent = '🫵 🔽';
@@ -389,7 +391,6 @@
         sync();
       });
     })();
-
 
     // Runtime assertions matching JSX useEffect
     (function(){
