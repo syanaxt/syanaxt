@@ -36,7 +36,7 @@
     <!-- PRODUCING -->
     <section id="producing" data-section class="scroll-mt-24">
       <button data-accordion class="flex w-full items-center justify-between rounded-xl bg-neutral-900 px-4 py-3 text-left text-lg font-semibold text-white hover:bg-neutral-800">
-        ПРОДЮСЕР ДЕВЕЛОПМЕНТА / ЛИНЕЙНЫЙ / СG
+        <span id="title-producing"></span>
         <span class="ml-2 text-sm text-neutral-400 whitespace-nowrap flex-shrink-0 toggle-icon">🫵 🔽</span>
       </button>
       <div class="accordion-content mt-4 space-y-4 leading-relaxed text-neutral-300 px-2">
@@ -342,6 +342,22 @@
         sync();
       });
       sync();
+    });
+
+    // Typewriter effect
+    function type(el, text, speed=40, delay=0) {
+      setTimeout(() => {
+        let i = 0;
+        let t = setInterval(() => {
+          el.textContent += text[i++];
+          if (i >= text.length) clearInterval(t);
+        }, speed);
+      }, delay);
+    }
+    
+    document.addEventListener('DOMContentLoaded', () => {
+      const el = document.getElementById('title-producing');
+      type(el, 'ПРОДЮСЕР ДЕВЕЛОПМЕНТА / ЛИНЕЙНЫЙ / CG', 40, 200);
     });
 
     // Runtime assertions matching JSX useEffect
