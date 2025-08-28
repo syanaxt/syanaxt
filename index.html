@@ -1,218 +1,369 @@
 <!DOCTYPE html>
 <html lang="ru">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Егор Подорога — портфолио</title>
-    <meta name="color-scheme" content="dark" />
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
-    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
-    <script crossorigin src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
-  </head>
-  <body class="bg-neutral-950 text-neutral-200">
-    <div id="root"></div>
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Егор Подорога — Портфолио</title>
+  <!-- Tailwind via CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    /* Simple fade/slide for accordion */
+    .accordion-content {
+      opacity: 0;
+      transform: translateY(8px);
+      transition: opacity 0.35s ease, transform 0.35s ease;
+    }
+    .accordion-content.open {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    /* Avatar fallback circle typography */
+    .avatar-fallback {
+      height: 5rem; width: 5rem;
+    }
+  </style>
+</head>
+<body class="min-h-screen bg-neutral-950 text-neutral-200">
+  <div class="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8 py-10 md:py-14">
+    <!-- Header -->
+    <header class="mb-10">
+      <div class="flex items-center gap-4">
+        <!-- Avatar -->
+        <img id="avatar-img" src="photo.png" alt="Егор Подорога"
+             class="h-20 w-20 rounded-full object-cover ring-2 ring-neutral-700" />
+        <div id="avatar-fallback" class="hidden avatar-fallback rounded-full ring-2 ring-neutral-700 bg-gradient-to-br from-neutral-700 to-neutral-500 flex items-center justify-center text-neutral-100 text-sm font-semibold" aria-label="Егор Подорога">ЕП</div>
+        <div>
+          <h1 class="text-xl font-semibold tracking-tight">Егор Подорога</h1>
+        </div>
+      </div>
+      <p class="mt-5 text-sm leading-relaxed text-neutral-300">
+        Йоу! Я родом из нефтедобывающих регионов на севере, по образованию инженер-строитель и сценарист-продюсер. Зарабатываю на квартиру в Москве и свадьбу, при этом выживаю, не теряя рассудка. Одержим нейросетями и кино.
+      </p>
+      <div class="mt-4 flex flex-wrap gap-2">
+        <span class="inline-flex items-center gap-1 rounded-full border border-neutral-800 bg-neutral-900/80 px-3 py-1 text-xs text-neutral-300"><span>🤖</span><span>#ИИ</span></span>
+        <span class="inline-flex items-center gap-1 rounded-full border border-neutral-800 bg-neutral-900/80 px-3 py-1 text-xs text-neutral-300"><span>🎬</span><span>#продюсер</span></span>
+        <span class="inline-flex items-center gap-1 rounded-full border border-neutral-800 bg-neutral-900/80 px-3 py-1 text-xs text-neutral-300"><span>✍️</span><span>#сценарист</span></span>
+        <span class="inline-flex items-center gap-1 rounded-full border border-neutral-800 bg-neutral-900/80 px-3 py-1 text-xs text-neutral-300"><span>📑</span><span>#редактор</span></span>
+        <span class="inline-flex items-center gap-1 rounded-full border border-neutral-800 bg-neutral-900/80 px-3 py-1 text-xs text-neutral-300"><span>😂</span><span>#комедия</span></span>
+        <span class="inline-flex items-center gap-1 rounded-full border border-neutral-800 bg-neutral-900/80 px-3 py-1 text-xs text-neutral-300"><span>🚀</span><span>#фантастика</span></span>
+      </div>
+    </header>
 
-    <script type="text/babel">
-      const { useState } = React;
-
-      function Avatar({ src, alt }) {
-        const [error, setError] = useState(false);
-        if (error) {
-          return (
-            <div aria-label={alt}
-                 className="h-20 w-20 rounded-full ring-2 ring-neutral-700 bg-gradient-to-br from-neutral-700 to-neutral-500
-                            flex items-center justify-center text-neutral-100 text-sm font-semibold">
-              ЕП
-            </div>
-          );
-        }
-        return (
-          <img src={src} alt={alt} onError={() => setError(true)}
-               className="h-20 w-20 rounded-full object-cover ring-2 ring-neutral-700" />
-        );
-      }
-
-      function Section({ id, title, children, defaultOpen = false }) {
-        const [open, setOpen] = useState(defaultOpen);
-        return (
-          <section id={id} className="scroll-mt-24">
-            <button
-              onClick={() => setOpen(!open)}
-              className="flex w-full items-center justify-between rounded-xl bg-neutral-900 px-4 py-3
-                         text-left text-lg font-semibold text-white hover:bg-neutral-800">
-              {title}
-              <span className="ml-2 text-sm text-neutral-400">{open ? "▲" : "▼"}</span>
-            </button>
-            {open && <div className="mt-4 space-y-4 leading-relaxed text-neutral-300 px-2">{children}</div>}
-            <div className="mt-8 h-px w-full bg-neutral-900" />
-          </section>
-        );
-      }
-
-      function App() {
-        const chips = [
-          { text: "#ИИ", emoji: "🤖" },
-          { text: "#продюсер", emoji: "🎬" },
-          { text: "#сценарист", emoji: "✍️" },
-          { text: "#редактор", emoji: "📑" },
-          { text: "#комедия", emoji: "😂" },
-          { text: "#фантастика", emoji: "🚀" },
-        ];
-
-        return (
-          <div className="min-h-screen">
-            <div className="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8 py-10 md:py-14">
-              <header className="mb-10">
-                <div className="flex items-center gap-4">
-                  <Avatar src="photo.png" alt="Егор Подорога" />
-                  <div>
-                    <h1 className="text-xl font-semibold tracking-tight">Егор Подорога</h1>
-                  </div>
-                </div>
-
-                <p className="mt-5 text-sm leading-relaxed text-neutral-300">
-                  Йоу! Я родом из нефтедобывающих регионов на севере, по образованию инженер-строитель и сценарист-продюсер.
-                  Зарабатываю на квартиру в Москве и свадьбу, при этом выживаю, не теряя рассудка. Одержим нейросетями и кино.
-                </p>
-
-                <div className="mt-4 flex flex-wrap gap-2">
-                  {chips.map(c => (
-                    <span key={c.text}
-                          className="inline-flex items-center gap-1 rounded-full border border-neutral-800 bg-neutral-900/80
-                                     px-3 py-1 text-xs text-neutral-300">
-                      <span>{c.emoji}</span><span>{c.text}</span>
-                    </span>
-                  ))}
-                </div>
-              </header>
-
-              {/* ПРОДЮСЕР */}
-              <Section id="producing" title="ПРОДЮСЕР ДЕВЕЛОПМЕНТА / ЛИНЕЙНЫЙ / CG" defaultOpen={false}>
-                <h3 className="text-sm font-medium text-neutral-300">Кейсы</h3>
-
-                <div className="grid gap-4 sm:grid-cols-2 mt-2">
-                  {/* КИНОЗАВОД */}
-                  <div className="relative rounded-2xl border border-neutral-800 bg-neutral-900/50 p-4">
-                    <span className="absolute top-3 right-3 text-[9px] text-neutral-500">2023 · 2024</span>
-                    <h4 className="text-sm font-semibold text-white flex items-center gap-2">
-                      <img src="Кинозавод_Лого1-Photoroom.png" alt="Кинозавод" className="h-5 w-5" />
-                      Кинокомпания «КИНОЗАВОД»
-                    </h4>
-                    <p className="mt-2 text-sm text-neutral-300">Линейный продюсер</p>
-                    <div className="mt-1 text-[13px] text-neutral-400">
-                      Работал на этапе препродакшна и продакшна. Занимался логистикой, администрированием команды,
-                      подбором подрядчиков и решением нестандартных производственных задач. Получил опыт
-                      взаимодействия с исполнительным продюсером в условиях полного метра.
-                    </div>
-                  </div>
-
-                  {/* ТРЕХМЕР */}
-                  <div className="relative rounded-2xl border border-neutral-800 bg-neutral-900/50 p-4">
-                    <span className="absolute top-3 right-3 text-[9px] text-neutral-500">2024</span>
-                    <h4 className="text-sm font-semibold text-white flex items-center gap-2">
-                      <img src="Трехмер_Лого.avif" alt="ТРЕХМЕР" className="h-5 w-5" />
-                      Студия «ТРЕХМЕР»
-                    </h4>
-                    <p className="mt-2 text-sm text-neutral-300">Координатор CG</p>
-                    <div className="mt-1 text-[13px] text-neutral-400">
-                      Ставил задачи артистам в рамках пайплайна и контролировал качество результата, передавал другим артистам материалы.
-                      При необходимости заменял продюсера, заключал договоры с исполнителями.
-                    </div>
-                  </div>
-
-                  {/* СИНЕРГИЯ */}
-                  <div className="relative rounded-2xl border border-neutral-800 bg-neutral-900/50 p-4">
-                    <span className="absolute top-3 right-3 text-[9px] text-neutral-500">2024 · 2025</span>
-                    <h4 className="text-sm font-semibold text-white flex items-center gap-2">
-                      <img src="Университет_Синергия_Лого.png" alt="Синергия" className="h-5 w-5" />
-                      Продакшн университет «Синергия»
-                    </h4>
-                    <p className="mt-2 text-sm text-neutral-300">Линейный продюсер</p>
-                    <div className="mt-1 text-[13px] text-neutral-400">
-                      Организация съёмок образовательного и корпоративного контента. Вёл проекты от идеи до финального материала,
-                      в том числе на стыке видео и ивент-продакшна. Вёл от 20 до 80 проектов одновременно:
-                      от бронирования съёмок и трансляций до полноценной рекламной кампании.
-                    </div>
-                  </div>
-
-                  {/* ПРОЕКТНАЯ РАБОТА */}
-                  <div className="relative rounded-2xl border border-neutral-800 bg-neutral-900/50 p-4">
-                    <span className="absolute top-3 right-3 text-[9px] text-neutral-500">2020 · 2024</span>
-                    <h4 className="text-sm font-semibold text-white">Интересная проектная работа</h4>
-                    <p className="mt-2 text-sm text-neutral-300">Разные роли</p>
-                    <div className="mt-1 text-[13px] text-neutral-400">
-                      Организация турниров по кулачным боям TOPDOG, проведение кинофестиваля в строительном университете НИУ МГСУ,
-                      а также полный цикл собственного короткометражного фильма — от сценария и режиссуры до монтажа и награды."
-                    </div>
-                  </div>
-                </div>
-
-                <h3 className="mt-6 text-sm font-medium text-neutral-300">Хард скиллс</h3>
-                <ul className="grid gap-2 sm:grid-cols-2 list-disc pl-5 text-sm text-neutral-300 mt-2">
-                  <li><strong>Креатив</strong> — разрабатываю и структурирую креативные концепции (мероприятия, форматы, кино/сериалы).</li>
-                  <li><strong>Продажа сценария</strong> — саммаризация сценарного материала, подготовка питчей и презентаций.</li>
-                  <li><strong>Производство</strong> — организую съёмки и экспедиции, логистика, коммуникация с подрядчиками и командой.</li>
-                  <li><strong>Постпродакшн</strong> — понимаю пайплайн, контролирую графику и финальные материалы.</li>
-                  <li><strong>Документооборот</strong> — веду проектную документацию, распределяю задачи, контролирую сроки и бюджет.</li>
-                  <li><strong>Технологии</strong> — FilmToolz, Cerebro, таск-трекеры, Adobe CC, DaVinci Resolve, ChatGPT.</li>
-                </ul>
-              </Section>
-
-              {/* АВТОР / РЕДАКТОР */}
-              <Section id="writing" title="АВТОР / РЕДАКТОР" defaultOpen={false}>
-                <h3 className="text-sm font-medium text-neutral-300">Кейсы</h3>
-
-                <div className="grid gap-4 sm:grid-cols-2 mt-2">
-                  <div className="relative rounded-2xl border border-neutral-800 bg-neutral-900/50 p-4">
-                    <span className="absolute top-3 right-3 text-[9px] text-neutral-500">2024</span>
-                    <h4 className="text-sm font-semibold text-white mt-3">Сценарная практика в студии «КАРГО»</h4>
-                    <p className="mt-2 text-sm text-neutral-300">Сценарист</p>
-                    <ul className="mt-1 list-disc pl-5 text-[13px] text-neutral-400">
-                      <li>Разработка оригинальных проектов</li>
-                      <li>Драфты синопсисов для франшизы «Любопытная Варвара» и процедурала</li>
-                      <li>Один из синопсисов передан в работу</li>
-                    </ul>
-                  </div>
-
-                  <div className="relative rounded-2xl border border-neutral-800 bg-neutral-900/50 p-4">
-                    <span className="absolute top-3 right-3 text-[9px] text-neutral-500">2025 · н.в.</span>
-                    <h4 className="text-sm font-semibold text-white mt-3">Сценарный цех СТС</h4>
-                    <p className="mt-2 text-sm text-neutral-300">Сценарист</p>
-                    <ul className="mt-1 list-disc pl-5 text-[13px] text-neutral-400">
-                      <li>Прошёл отбор, участвую в сценарной комнате</li>
-                      <li>Работа над концепциями в условиях реального производства</li>
-                    </ul>
-                  </div>
-                </div>
-
-                <h3 className="mt-4 text-sm font-medium text-neutral-300">Авторские проекты</h3>
-                <ul className="mt-2 space-y-2">
-                  <li><a className="underline" href="https://drive.google.com/drive/folders/1rLPY9RR63BfO593F5LhTMglLS2Omnhsy?usp=sharing">«Точка сингулярности» — сериал (8×50), триллер / научная фантастика</a></li>
-                  <li><a className="underline" href="https://drive.google.com/drive/folders/14jfFcfyfPegPPVW5HyauNOoaANjrk9Np?usp=sharing">«Сказочный санаторий» — полнометражная семейная комедия</a></li>
-                  <li><a className="underline" href="https://docs.google.com/document/d/1SGAUOk_x-RIx2aRbSfqfvIcnp3p1lxmIGJ2V3yzShQQ/edit?usp=sharing">«Мой муж — маньяк» — сериал (8–10×35), драмеди / мокьюментари</a></li>
-                  <li><a className="underline" href="https://docs.google.com/document/d/1v8K5pe8GK8RsUfho1i_n5MXIrmBLjrpOtXJB9R2T8R4/edit?usp=sharing">Логлайны (14 проектов) — разные форматы и жанры</a></li>
-                </ul>
-              </Section>
-
-              <div className="mt-12 space-y-4 leading-relaxed text-neutral-300">
-                <h3 className="text-sm font-medium text-neutral-300">Планы на развитие карьеры</h3>
-                <p>
-                  Планирую двигаться в сторону сценарного девелопмента и продюсирования. Близок этап от идеи до финального драфта,
-                  но интересна и подготовка, подбор креативной команды. Хочу углубить навыки редактуры и работать с шоураннерами и продюсерами.
-                  Цель на 5 лет — шоураннер / креативный продюсер.
-                </p>
-                <p>Ищу оплачиваемую занятость: любую в кино с перспективами роста. Готов к проектной загрузке.</p>
-              </div>
-
-              <footer className="pt-8 text-xs text-neutral-500">© {new Date().getFullYear()} Егор Подорога.</footer>
+    <!-- Section Template -->
+    <section id="producing" data-section class="scroll-mt-24">
+      <button data-accordion class="flex w-full items-center justify-between rounded-xl bg-neutral-900 px-4 py-3 text-left text-lg font-semibold text-white hover:bg-neutral-800">
+        ПРОДЮСЕР ДЕВЕЛОПМЕНТА / ЛИНЕЙНЫЙ / СG
+        <span class="ml-2 text-sm text-neutral-400 toggle-icon">🫵 🔽</span>
+      </button>
+      <div class="mt-4 space-y-4 leading-relaxed text-neutral-300 px-2 accordion-content">
+        <h3 class="text-sm font-medium text-neutral-300">Кейсы</h3>
+        <div class="grid gap-4 sm:grid-cols-2 mt-2">
+          <div class="rounded-2xl border border-neutral-800 bg-neutral-900/50 p-4 relative">
+            <span class="absolute top-3 right-3 text-[9px] text-neutral-500">2023 · 2024</span>
+            <h4 class="text-sm font-semibold text-white flex items-center gap-2">
+              <img src="Кинозавод_Лого1-Photoroom.png" alt="Кинозавод" class="h-5 w-5" />
+              Кинокомпания «КИНОЗАВОД»
+            </h4>
+            <p class="mt-2 text-sm text-neutral-300">Линейный продюсер</p>
+            <div class="mt-1 text-[13px] text-neutral-400">
+              Работал на этапе препродакшна и продакшна. Занимался логистикой, администрированием команды, подбором подрядчиков и решением нестандартных производственных задач. Получил опыт взаимодействия с исполнительным продюсером в условиях полного метра.
             </div>
           </div>
-        );
-      }
 
-      const root = ReactDOM.createRoot(document.getElementById("root"));
-      root.render(<App />);
-    </script>
-  </body>
+          <div class="rounded-2xl border border-neutral-800 bg-neutral-900/50 p-4 relative">
+            <span class="absolute top-3 right-3 text-[9px] text-neutral-500">2024</span>
+            <h4 class="text-sm font-semibold text-white flex items-center gap-2">
+              <img src="Трехмер_Лого.avif" alt="Трехмер" class="h-5 w-5" />
+              Студия «ТРЕХМЕР»
+            </h4>
+            <p class="mt-2 text-sm text-neutral-300">Координатор CG</p>
+            <div class="mt-1 text-[13px] text-neutral-400">
+              Ставил задачи артистам в рамках пайплайна и контролировал качество результата, передавал другим артистам материалы. При необходимости заменял продюсера, заключал договоры с исполнителями.
+            </div>
+          </div>
+
+          <div class="rounded-2xl border border-neutral-800 bg-neutral-900/50 p-4 relative">
+            <span class="absolute top-3 right-3 text-[9px] text-neutral-500">2024 · 2025</span>
+            <h4 class="text-sm font-semibold text-white flex items-center gap-2">
+              <img src="Университет_Синергия_Лого.png" alt="Синергия" class="h-5 w-5" />
+              Продакшн университет «Синергия»
+            </h4>
+            <p class="mt-2 text-sm text-neutral-300">Линейный продюсер</p>
+            <div class="mt-1 text-[13px] text-neutral-400">
+              Организация съёмок образовательного и корпоративного контента. Вёл проекты от идеи до финального материала, в том числе на стыке видео и ивент-продакшна. Вёл от 20 до 80 проектов разной сложности одновременно: от бронирования съёмок и трансляций до полноценной рекламной кампании.
+            </div>
+          </div>
+
+          <div class="rounded-2xl border border-neutral-800 bg-neutral-900/50 p-4 relative">
+            <span class="absolute top-3 right-3 text-[9px] text-neutral-500">2020 · 2024</span>
+            <h4 class="text-sm font-semibold text-white">Интересная проектная работа</h4>
+            <div class="mt-1 text-[13px] text-neutral-400">
+              Организация турниров по кулачным боям TOPDOG, проведение кинофестиваля в строительном университете НИУ МГСУ, а также полный цикл собственного короткометражного фильма — от сценария и режиссуры до монтажа и получения награды на своём же фестивале 😁👌
+            </div>
+          </div>
+        </div>
+
+        <h3 id="filmography" class="mt-6 text-sm font-medium text-neutral-300">Фильмография</h3>
+        <div class="grid gap-4 sm:grid-cols-2 mt-2 text-sm text-neutral-300">
+          <div class="rounded-2xl border border-neutral-800 bg-neutral-900/50 p-4">
+            <h4 class="text-sm font-semibold text-white mb-2">Фильмы</h4>
+            <ul class="list-disc pl-5 space-y-1 text-[13px] text-neutral-400">
+              <li>п/м «Мой Север» (Реж. Юлия Крылова) КИНОЗАВОД · 2026</li>
+              <li>п/м «Казнь» (Реж. Ладо Кватания) · 2022</li>
+              <li>к/м «ВЗРЫД» (Реж. Екатерина Горбачева) · 2023 и другие…</li>
+            </ul>
+          </div>
+
+          <div class="rounded-2xl border border-neutral-800 bg-neutral-900/50 p-4">
+            <h4 class="text-sm font-semibold text-white mb-2">Сериалы</h4>
+            <ul class="list-disc pl-5 space-y-1 text-[13px] text-neutral-400">
+              <li>Сериал «Библеотекарь» (Реж. Игорь Твердохлебов) · 2023</li>
+              <li>Сериал «Все как у людей» (Реж. Кирилл Седухин) · 2022</li>
+            </ul>
+          </div>
+
+          <div class="rounded-2xl border border-neutral-800 bg-neutral-900/50 p-4">
+            <h4 class="text-sm font-semibold text-white mb-2">Реклама</h4>
+            <div class="text-[13px] text-neutral-400">Rich, Mos.ru, ЛИГА СТАВОК, Sheba (компания Mars)</div>
+          </div>
+
+          <div class="rounded-2xl border border-neutral-800 bg-neutral-900/50 p-4">
+            <h4 class="text-sm font-semibold text-white mb-2">Прямой эфир</h4>
+            <div class="text-[13px] text-neutral-400">Шоу кулачные бои TOPDOG (с 15 по 30 турниры) 2022 · 2024</div>
+          </div>
+        </div>
+
+        <h3 class="mt-6 text-sm font-medium text-neutral-300">Хард скиллс</h3>
+        <ul class="grid gap-2 sm:grid-cols-2 list-disc pl-5 text-sm text-neutral-300 mt-2">
+          <li><strong>Креатив</strong> — разрабатываю и структурирую креативные концепции (мероприятия, форматы, кино/сериалы).</li>
+          <li><strong>Продажа сценария</strong> — саммаризация сценарного материала, подготовка питчей и презентаций.</li>
+          <li><strong>Производство</strong> — организую съёмки и экспедиции, выстраиваю логистику, веду коммуникацию с подрядчиками и командой.</li>
+          <li><strong>Постпродакшн</strong> — понимаю пайплайн, контролирую графику и финальные материалы.</li>
+          <li><strong>Документооборот</strong> — веду проектную документацию, распределяю задачи, контролирую сроки и бюджет.</li>
+          <li><strong>Технологии</strong> — работаю в FilmToolz, Cerebro, таск-трекерах, Adobe CC, DaVinci Resolve, ChatGPT.</li>
+        </ul>
+      </div>
+      <div class="mt-8 h-px w-full bg-neutral-900"></div>
+    </section>
+
+    <section id="writing" data-section class="scroll-mt-24">
+      <button data-accordion class="flex w-full items-center justify-between rounded-xl bg-neutral-900 px-4 py-3 text-left text-lg font-semibold text-white hover:bg-neutral-800">
+        АВТОР / РЕДАКТОР
+        <span class="ml-2 text-sm text-neutral-400 toggle-icon">🫵 🔽</span>
+      </button>
+      <div class="mt-4 space-y-4 leading-relaxed text-neutral-300 px-2 accordion-content">
+        <div>
+          <h3 class="text-sm font-medium text-neutral-300">Кейсы</h3>
+          <div class="grid gap-4 sm:grid-cols-2 mt-2">
+            <div class="rounded-2xl border border-neutral-800 bg-neutral-900/50 p-4 relative">
+              <span class="absolute top-3 right-3 text-[9px] text-neutral-500">2024</span>
+              <h4 class="text-sm font-semibold text-white mt-3">Сценарная практика в студии «КАРГО»</h4>
+              <p class="mt-2 text-sm text-neutral-300">Сценарист</p>
+              <ul class="mt-1 list-disc pl-5 text-[13px] text-neutral-400">
+                <li>Разработка оригинальных проектов</li>
+                <li>Драфты синопсисов для франшизы «Любопытная Варвара» и процедурала</li>
+                <li>Один из синопсисов передан в работу</li>
+              </ul>
+            </div>
+
+            <div class="rounded-2xl border border-neutral-800 bg-neutral-900/50 p-4 relative">
+              <span class="absolute top-3 right-3 text-[9px] text-neutral-500">2025 · н.в.</span>
+              <h4 class="text-sm font-semibold text-white mt-3">Сценарный цех СТС</h4>
+              <p class="mt-2 text-sm text-neutral-300">Сценарист</p>
+              <ul class="mt-1 list-disc pl-5 text-[13px] text-neutral-400">
+                <li>Прошёл отбор, участвую в сценарной комнате</li>
+                <li>Работа над концепциями в условиях реального производства</li>
+              </ul>
+            </div>
+          </div>
+
+          <h3 class="mt-4 text-sm font-medium text-neutral-300">Авторские проекты</h3>
+          <ul class="mt-2 space-y-2">
+            <li><a href="https://drive.google.com/drive/folders/1rLPY9RR63BfO593F5LhTMglLS2Omnhsy?usp=sharing" class="underline">🌐 «Точка сингулярности» — сериал (8×50), триллер / научная фантастика</a></li>
+            <li><a href="https://drive.google.com/drive/folders/14jfFcfyfPegPPVW5HyauNOoaANjrk9Np?usp=sharing" class="underline">🌐 «Сказочный санаторий» — полнометражная семейная комедия</a></li>
+            <li><a href="https://docs.google.com/document/d/1Notr1OZk-3xD2FqjXlPPмКMY_XhRrRm7/edit?usp=sharing&ouid=100519466800883132493&rtpof=true&sd=true" class="underline">🌐 «Пересолила» — экранизация Чехова, короткий метр (10 мин.), драмеди</a></li>
+            <li><a href="https://docs.google.com/document/d/1SGAUOk_x-RIx2aRbSfqfvIcnp3p1lxmIGJ2V3yzShQQ/edit?usp=sharing" class="underline">🌐 «Мой муж — маньяк» — сериал (8–10×35), драмеди / мокьюментари</a></li>
+            <li><a href="https://docs.google.com/document/d/1v8K5pe8GK8RsUfho1i_n5MXIrmBLjrpOtXJB9R2T8R4/edit?usp=sharing" class="underline">🌐 Логлайны (14 проектов) — разные форматы и жанры</a></li>
+          </ul>
+
+          <h3 class="mt-6 text-sm font-medium text-neutral-300">Снятые сценарии</h3>
+          <div class="rounded-2xl border border-neutral-800 bg-neutral-900/50 p-4 mt-2">
+            <ul class="list-disc pl-5 space-y-1 text-[13px] text-neutral-400">
+              <li>Веб-сериал «Столовая» (Реж. Влад Шенг) · 2024</li>
+              <li>Короткометражка «Профессия строитель» (Реж. Егор Подорога) · 2021</li>
+              <li>Экранизация рассказа «Пересолил» (Реж. Юра Гусев) · 2025</li>
+              <li>Proof-of-concept ситкома «Любовь после гроба» (Реж. Юра Гусев) · 2025</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="mt-8 h-px w-full bg-neutral-900"></div>
+    </section>
+
+    <section id="science-education" data-section class="scroll-mt-24">
+      <button data-accordion class="flex w-full items-center justify-between rounded-xl bg-neutral-900 px-4 py-3 text-left text-lg font-semibold text-white hover:bg-neutral-800">
+        НАУКА / ОБРАЗОВАНИЕ / ПРЕПОДАВАНИЕ
+        <span class="ml-2 text-sm text-neutral-400 toggle-icon">🫵 🔽</span>
+      </button>
+      <div class="mt-4 space-y-4 leading-relaxed text-neutral-300 px-2 accordion-content">
+        <h3 class="text-sm font-medium text-neutral-300">Образование</h3>
+        <div class="grid gap-4 sm:grid-cols-2 mt-2 text-sm items-start">
+          <!-- Column 1 -->
+          <div class="space-y-4">
+            <div class="rounded-2xl border border-neutral-800 bg-neutral-900/50 p-4 relative">
+              <span class="absolute top-3 right-3 text-[9px] text-neutral-500">2025 · 2028</span>
+              <h4 class="text-xs uppercase tracking-wider text-neutral-400 mb-2">АСПИРАНТУРА</h4>
+              <ul class="space-y-2 text-neutral-300">
+                <li>
+                  <span class="flex items-center gap-2 font-semibold text-white">
+                    <img src="logo_gitr.png" alt="АО ГИТР" class="h-5 w-5" />
+                    АО ГИТР — Теория и история экранной культуры и искусства
+                  </span>
+                </li>
+              </ul>
+            </div>
+            <div class="rounded-2xl border border-neutral-800 bg-neutral-900/50 p-4 relative">
+              <span class="absolute top-3 right-3 text-[9px] text-neutral-500">2022 · 2023</span>
+              <h4 class="text-xs uppercase tracking-wider text-neutral-400 mb-2">ДПО</h4>
+              <ul class="space-y-2 text-neutral-300">
+                <li>
+                  <span class="flex items-center gap-2 font-semibold text-white">
+                    <img src="logo_vgik.png" alt="ВГИК ВКиТ" class="h-5 w-5" />
+                    ВГИК ВКиТ — Кинодраматург
+                  </span>
+                </li>
+              </ul>
+            </div>
+          </div>
+
+          <!-- Column 2 -->
+          <div class="rounded-2xl border border-neutral-800 bg-neutral-900/50 p-4 self-start relative">
+            <span class="absolute top-3 right-3 text-[9px] text-neutral-500">2019 · 2025</span>
+            <h4 class="text-xs uppercase tracking-wider text-neutral-400 mb-2">ПОЛНОЕ ВЫСШЕЕ ОБРАЗОВАНИЕ</h4>
+            <div class="flex flex-col gap-4">
+              <div>
+                <div class="flex items-center gap-2 font-semibold text-white">
+                  <img src="logo_hse.png" alt="НИУ ВШЭ" class="h-5 w-5" />
+                  НИУ ВШЭ — Магистратура Кинопроизводство
+                </div>
+              </div>
+              <div>
+                <div class="flex items-center gap-2 font-semibold text-white">
+                  <img src="logo_mgsu.png" alt="НИУ МГСУ" class="h-5 w-5" />
+                  НИУ МГСУ — Бакалавриат Строитель
+                </div>
+              </div>
+              <div id="english-b2" class="text-white font-semibold">🇬🇧 Английский язык — уровень B2</div>
+            </div>
+          </div>
+        </div>
+
+        <h3 class="mt-6 text-sm font-medium text-neutral-300">Научная деятельность</h3>
+        <ul class="mt-2 space-y-2">
+          <li>
+            <a href="https://docs.google.com/document/d/11Q1Si2zC6iwCjt2A5IXnuPxXgH6urNvM/edit?usp=sharing&ouid=100519466800883132493&rtpof=true&sd=true"
+               class="underline">
+              🌐 Реферат на тему «Особенности индустриальных технологий кинопроизводства сценариев в 2020-ых: эффективное использование генеративных моделей искусственного интеллекта»
+            </a>
+          </li>
+        </ul>
+      </div>
+      <div class="mt-8 h-px w-full bg-neutral-900"></div>
+    </section>
+
+    <!-- Footer note blocks -->
+    <div class="mt-12 space-y-4 leading-relaxed text-neutral-300">
+      <h3 class="text-sm font-medium text-neutral-300">Планы на развитие карьеры</h3>
+      <p>
+        Планирую двигаться в сторону сценарного девелопмента и продюсирования. Близок этап от идеи до финального драфта, но интересна и подготовка, подбор креативной команды. Хочу углубить навыки редактуры и работать с шоураннерами и продюсерами. Цель на 5 лет — шоураннер / креативный продюсер.
+      </p>
+      <p>
+        Ищу оплачиваемую занятость: любую в кино с перспективами роста. Готов к проектной загрузке.
+      </p>
+    </div>
+
+    <footer class="pt-8 text-xs text-neutral-500 flex items-center justify-center gap-2">
+      © <span id="year"></span> Егор Подорога
+      <img src="signature_logo.png" alt="Подпись Егора Подороги" class="h-12 inline-block" />
+    </footer>
+  </div>
+
+  <script>
+    // Set emoji favicon 🎬
+    (function() {
+      try {
+        const svg = "<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎬</text></svg>";
+        const url = 'data:image/svg+xml;charset=UTF-8,' + encodeURIComponent(svg);
+        let link = document.querySelector("link[rel='icon']");
+        if (!link) {
+          link = document.createElement('link');
+          link.setAttribute('rel', 'icon');
+          document.head.appendChild(link);
+        }
+        link.setAttribute('href', url);
+      } catch (e) {
+        console.warn('favicon set failed', e);
+      }
+    })();
+
+    // Dynamic year
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    // Avatar fallback on error
+    const avatarImg = document.getElementById('avatar-img');
+    const avatarFallback = document.getElementById('avatar-fallback');
+    avatarImg.addEventListener('error', function() {
+      avatarImg.classList.add('hidden');
+      avatarFallback.classList.remove('hidden');
+    });
+
+    // Accordion behavior
+    document.querySelectorAll('section[data-section]').forEach(function(section) {
+      const btn = section.querySelector('button[data-accordion]');
+      const content = section.querySelector('.accordion-content');
+      const icon = section.querySelector('.toggle-icon');
+      let open = false; // defaultOpen=false in source
+      const sync = () => {
+        if (open) {
+          content.classList.add('open');
+          content.style.display = 'block';
+          if (icon) icon.textContent = '👍 🔼';
+        } else {
+          content.classList.remove('open');
+          content.style.display = 'none';
+          if (icon) icon.textContent = '🫵 🔽';
+        }
+      };
+      btn.addEventListener('click', function() {
+        open = !open;
+        sync();
+      });
+      // initialize
+      sync();
+    });
+
+    // Runtime tests roughly mirroring original console.asserts
+    (function() {
+      console.assert(typeof "photo.png" === "string", "photo path is a string");
+      console.assert(document.getElementById("producing"), "producing section exists");
+      console.assert(document.getElementById("writing"), "writing section exists");
+      console.assert(document.getElementById("science-education"), "science/education section exists");
+      console.assert(document.querySelectorAll("section[data-section]").length >= 3, "at least three sections render");
+
+      const links = document.querySelectorAll('a[href^="http"]');
+      links.forEach(link => console.assert(link.textContent.includes("🌐"), "all external links must have globe emoji"));
+
+      const b2 = document.getElementById('english-b2');
+      console.assert(!!b2 && b2.textContent.includes('🇬🇧'), 'english B2 badge exists and has 🇬🇧');
+
+      const headers = document.querySelectorAll('button[data-accordion]');
+      console.assert(headers.length >= 3, 'accordion headers present');
+      console.assert(Array.from(headers).some(h => h.textContent.includes('🫵') || h.textContent.includes('👍')), 'toggle icons rendered');
+
+      console.assert(document.getElementById('filmography'), 'filmography exists');
+
+      console.assert(document.querySelector('footer img[alt="Подпись Егора Подороги"]'), 'signature logo present');
+    })();
+  </script>
+</body>
 </html>
