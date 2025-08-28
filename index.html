@@ -27,7 +27,7 @@
           <h1 class="text-xl font-semibold tracking-tight">Егор Подорога</h1>
         </div>
       </div>
-      <p class="mt-5 text-sm leading-relaxed text-neutral-300">
+      <p id="intro" class="mt-5 text-sm leading-relaxed text-neutral-300">
         Йоу! Я родом из нефтедобывающих регионов на севере, по образованию инженер-строитель и сценарист-продюсер. Зарабатываю на квартиру в Москве и свадьбу, при этом выживаю, не теряя рассудка. Одержим нейросетями и кино.
       </p>
       <div id="chips" class="mt-4 flex flex-wrap gap-2"></div>
@@ -336,6 +336,18 @@
         }, speed);
       }, delay);
     }
+
+    // Typewriter for intro text
+    document.addEventListener('DOMContentLoaded', () => {
+      const intro = document.getElementById('intro');
+      const text = intro.textContent.trim();
+      intro.textContent = '';
+      let i = 0;
+      const t = setInterval(() => {
+        intro.textContent += text[i++];
+        if (i >= text.length) clearInterval(t);
+      }, 20); // скорость печати, меньше = быстрее
+    });
     
     function startTypingIn(container){
       const nodes = container.querySelectorAll('h3, h4, p, li, .text-[13px]');
