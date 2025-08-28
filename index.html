@@ -323,21 +323,22 @@
     })();
 
     // Accordion behavior + typewriter-on-open
-    function typeLine(el, speed=12, delay=0){
-      if (el.dataset.typed) return;
-      const txt = el.textContent;
-      el.textContent = '';
-      el.dataset.typed = '1';
-      setTimeout(()=>{
-        let i = 0;
-        const t = setInterval(()=>{
-          el.textContent += txt[i++] || '';
-          if (i >= txt.length) clearInterval(t);
-        }, speed);
-      }, delay);
-    }
+    (function () {
+      function typeLine(el, speed = 12, delay = 0) {
+        if (el.dataset.typed) return;
+        const txt = el.textContent;
+        el.textContent = '';
+        el.dataset.typed = '1';
+        setTimeout(() => {
+          let i = 0;
+          const t = setInterval(() => {
+            el.textContent += txt[i++] || '';
+            if (i >= txt.length) clearInterval(t);
+          }, speed);
+        }, delay);
+      }
 
-    // Typewriter for intro text
+          // Typewriter for intro text
     document.addEventListener('DOMContentLoaded', () => {
       const intro = document.getElementById('intro');
       const text = intro.textContent.trim();
@@ -349,42 +350,46 @@
       }, 20); // скорость печати, меньше = быстрее
     });
     
-    function startTypingIn(container){
-      const nodes = container.querySelectorAll('h3, h4, p, li, .text-[13px]');
-      let delay = 0;
-      nodes.forEach(n => {
-        const len = n.textContent.trim().length;
-        if (len < 6) return;
-        typeLine(n, 10, delay);
-        delay += Math.min(800, 12 * len);
-      });
-    }
+      function startTypingIn(container) {
+        // берём текстовые элементы и фильтруем
+        const nodes = Array.from(container.querySelectorAll('h3, h4, p, li, div'));
+        const targets = nodes.filter(n => {
+          const text = n.textContent.trim();
+          if (text.length < 6) return false;
+          if (n.children.length > 0) return false;              // не трогаем h4 с иконками/картинками
+          if (n.tagName === 'DIV' && !n.classList.contains('text-[13px]')) return false; // из div оставляем только наши маленькие тексты
+          return true;
+        });
     
-    document.querySelectorAll('section[data-section]').forEach(section=>{
-      const btn = section.querySelector('button[data-accordion]');
-      const content = section.querySelector('.accordion-content');
-      const icon = section.querySelector('.toggle-icon');
-      let open = false;
-    
-      const sync = () => {
-        if (open) {
-          content.classList.add('open');
-          if (icon) icon.textContent = '👍 🔼';
-          startTypingIn(content);   // печать при раскрытии
-        } else {
-          content.classList.remove('open');
-          if (icon) icon.textContent = '🫵 🔽';
+        let delay = 0;
+        for (const el of targets) {
+          typeLine(el, 10, delay);
+          delay += Math.min(800, 12 * el.textContent.trim().length);
         }
-      };
+      }
     
-      btn.addEventListener('click', ()=>{ open = !open; sync(); });
-      sync();
-    });
+      document.querySelectorAll('section[data-section]').forEach(section => {
+        const btn = section.querySelector('button[data-accordion]');
+        const content = section.querySelector('.accordion-content');
+        const icon = section.querySelector('.toggle-icon');
+        let open = false;
     
-    document.addEventListener('DOMContentLoaded', () => {
-      const el = document.getElementById('title-producing');
-      type(el, 'ПРОДЮСЕР ДЕВЕЛОПМЕНТА / ЛИНЕЙНЫЙ / CG', 40, 200);
-    });
+        const sync = () => {
+          if (open) {
+            content.classList.add('open');
+            if (icon) icon.textContent = '👍 🔼';
+            startTypingIn(content);                     // печать при раскрытии
+          } else {
+            content.classList.remove('open');
+            if (icon) icon.textContent = '🫵 🔽';
+          }
+        };
+    
+        btn.addEventListener('click', () => { open = !open; sync(); });
+        sync();
+      });
+    })();
+
 
     // Runtime assertions matching JSX useEffect
     (function(){
