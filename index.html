@@ -7,20 +7,9 @@
   <!-- Tailwind via CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
   <style>
-    /* Simple fade/slide for accordion */
-    .accordion-content {
-      opacity: 0;
-      transform: translateY(8px);
-      transition: opacity 0.35s ease, transform 0.35s ease;
-    }
-    .accordion-content.open {
-      opacity: 1;
-      transform: translateY(0);
-    }
-    /* Avatar fallback circle typography */
-    .avatar-fallback {
-      height: 5rem; width: 5rem;
-    }
+    .accordion-content{opacity:0;transform:translateY(8px);transition:opacity .35s ease,transform .35s ease;display:none}
+    .accordion-content.open{opacity:1;transform:translateY(0);display:block}
+    .avatar-fallback{height:5rem;width:5rem}
   </style>
 </head>
 <body class="min-h-screen bg-neutral-950 text-neutral-200">
@@ -28,34 +17,28 @@
     <!-- Header -->
     <header class="mb-10">
       <div class="flex items-center gap-4">
-        <!-- Avatar -->
-        <img id="avatar-img" src="photo.png" alt="Егор Подорога"
-             class="h-20 w-20 rounded-full object-cover ring-2 ring-neutral-700" />
-        <div id="avatar-fallback" class="hidden avatar-fallback rounded-full ring-2 ring-neutral-700 bg-gradient-to-br from-neutral-700 to-neutral-500 flex items-center justify-center text-neutral-100 text-sm font-semibold" aria-label="Егор Подорога">ЕП</div>
-        <div>
+        <!-- Avatar with fallback -->
+        <img id="avatar-img" src="photo.png" alt="Егор Подорога" class="h-20 w-20 rounded-full object-cover ring-2 ring-neutral-700" />
+        <div id="avatar-fallback" aria-label="Егор Подорога" class="hidden avatar-fallback rounded-full ring-2 ring-neutral-700 bg-gradient-to-br from-neutral-700 to-neutral-500 flex items-center justify-center text-neutral-100 text-sm font-semibold">
+          ЕП
+        </div>
+        <div class="text-left">
           <h1 class="text-xl font-semibold tracking-tight">Егор Подорога</h1>
         </div>
       </div>
       <p class="mt-5 text-sm leading-relaxed text-neutral-300">
         Йоу! Я родом из нефтедобывающих регионов на севере, по образованию инженер-строитель и сценарист-продюсер. Зарабатываю на квартиру в Москве и свадьбу, при этом выживаю, не теряя рассудка. Одержим нейросетями и кино.
       </p>
-      <div class="mt-4 flex flex-wrap gap-2">
-        <span class="inline-flex items-center gap-1 rounded-full border border-neutral-800 bg-neutral-900/80 px-3 py-1 text-xs text-neutral-300"><span>🤖</span><span>#ИИ</span></span>
-        <span class="inline-flex items-center gap-1 rounded-full border border-neutral-800 bg-neutral-900/80 px-3 py-1 text-xs text-neutral-300"><span>🎬</span><span>#продюсер</span></span>
-        <span class="inline-flex items-center gap-1 rounded-full border border-neutral-800 bg-neutral-900/80 px-3 py-1 text-xs text-neutral-300"><span>✍️</span><span>#сценарист</span></span>
-        <span class="inline-flex items-center gap-1 rounded-full border border-neutral-800 bg-neutral-900/80 px-3 py-1 text-xs text-neutral-300"><span>📑</span><span>#редактор</span></span>
-        <span class="inline-flex items-center gap-1 rounded-full border border-neutral-800 bg-neutral-900/80 px-3 py-1 text-xs text-neutral-300"><span>😂</span><span>#комедия</span></span>
-        <span class="inline-flex items-center gap-1 rounded-full border border-neutral-800 bg-neutral-900/80 px-3 py-1 text-xs text-neutral-300"><span>🚀</span><span>#фантастика</span></span>
-      </div>
+      <div id="chips" class="mt-4 flex flex-wrap gap-2"></div>
     </header>
 
-    <!-- Section Template -->
+    <!-- PRODUCING -->
     <section id="producing" data-section class="scroll-mt-24">
       <button data-accordion class="flex w-full items-center justify-between rounded-xl bg-neutral-900 px-4 py-3 text-left text-lg font-semibold text-white hover:bg-neutral-800">
         ПРОДЮСЕР ДЕВЕЛОПМЕНТА / ЛИНЕЙНЫЙ / СG
-        <span class="ml-2 text-sm text-neutral-400 toggle-icon">🫵 🔽</span>
+        <span class="ml-2 text-sm text-neutral-400 whitespace-nowrap flex-shrink-0 toggle-icon">🫵 🔽</span>
       </button>
-      <div class="mt-4 space-y-4 leading-relaxed text-neutral-300 px-2 accordion-content">
+      <div class="accordion-content mt-4 space-y-4 leading-relaxed text-neutral-300 px-2">
         <h3 class="text-sm font-medium text-neutral-300">Кейсы</h3>
         <div class="grid gap-4 sm:grid-cols-2 mt-2">
           <div class="rounded-2xl border border-neutral-800 bg-neutral-900/50 p-4 relative">
@@ -103,6 +86,16 @@
           </div>
         </div>
 
+        <h3 class="mt-6 text-sm font-medium text-neutral-300">Хард скиллс</h3>
+        <ul class="grid gap-2 sm:grid-cols-2 list-disc pl-5 text-sm text-neutral-300 mt-2">
+          <li><strong>Креатив</strong> — разрабатываю и структурирую креативные концепции (мероприятия, форматы, кино/сериалы)</li>
+          <li><strong>Продажа сценария</strong> — саммаризация сценарного материала, подготовка питчей и презентаций</li>
+          <li><strong>Производство</strong> — организую съёмки и экспедиции, выстраиваю логистику, веду коммуникацию с подрядчиками и командой</li>
+          <li><strong>Постпродакшн</strong> — понимаю пайплайн, контролирую графику и финальные материалы</li>
+          <li><strong>Документооборот</strong> — веду проектную документацию, распределяю задачи, контролирую сроки и бюджет</li>
+          <li><strong>Технологии</strong> — работаю в FilmToolz, Cerebro, таск-трекерах, Adobe CC, DaVinci Resolve, ChatGPT</li>
+        </ul>
+
         <h3 id="filmography" class="mt-6 text-sm font-medium text-neutral-300">Фильмография</h3>
         <div class="grid gap-4 sm:grid-cols-2 mt-2 text-sm text-neutral-300">
           <div class="rounded-2xl border border-neutral-800 bg-neutral-900/50 p-4">
@@ -124,34 +117,25 @@
 
           <div class="rounded-2xl border border-neutral-800 bg-neutral-900/50 p-4">
             <h4 class="text-sm font-semibold text-white mb-2">Реклама</h4>
-            <div class="text-[13px] text-neutral-400">Rich, Mos.ru, ЛИГА СТАВОК, Sheba (компания Mars)</div>
+            <div class="text-[13px] text-neutral-400"><li>Rich, Mos.ru, ЛИГА СТАВОК, Sheba (компания Mars)</li></div>
           </div>
 
           <div class="rounded-2xl border border-neutral-800 bg-neutral-900/50 p-4">
             <h4 class="text-sm font-semibold text-white mb-2">Прямой эфир</h4>
-            <div class="text-[13px] text-neutral-400">Шоу кулачные бои TOPDOG (с 15 по 30 турниры) 2022 · 2024</div>
+            <div class="text-[13px] text-neutral-400"><li>Шоу кулачные бои TOPDOG (с 15 по 30 турниры) 2022 · 2024</li></div>
           </div>
         </div>
-
-        <h3 class="mt-6 text-sm font-medium text-neutral-300">Хард скиллс</h3>
-        <ul class="grid gap-2 sm:grid-cols-2 list-disc pl-5 text-sm text-neutral-300 mt-2">
-          <li><strong>Креатив</strong> — разрабатываю и структурирую креативные концепции (мероприятия, форматы, кино/сериалы).</li>
-          <li><strong>Продажа сценария</strong> — саммаризация сценарного материала, подготовка питчей и презентаций.</li>
-          <li><strong>Производство</strong> — организую съёмки и экспедиции, выстраиваю логистику, веду коммуникацию с подрядчиками и командой.</li>
-          <li><strong>Постпродакшн</strong> — понимаю пайплайн, контролирую графику и финальные материалы.</li>
-          <li><strong>Документооборот</strong> — веду проектную документацию, распределяю задачи, контролирую сроки и бюджет.</li>
-          <li><strong>Технологии</strong> — работаю в FilmToolz, Cerebro, таск-трекерах, Adobe CC, DaVinci Resolve, ChatGPT.</li>
-        </ul>
       </div>
       <div class="mt-8 h-px w-full bg-neutral-900"></div>
     </section>
 
+    <!-- WRITING -->
     <section id="writing" data-section class="scroll-mt-24">
       <button data-accordion class="flex w-full items-center justify-between rounded-xl bg-neutral-900 px-4 py-3 text-left text-lg font-semibold text-white hover:bg-neutral-800">
         АВТОР / РЕДАКТОР
-        <span class="ml-2 text-sm text-neutral-400 toggle-icon">🫵 🔽</span>
+        <span class="ml-2 text-sm text-neutral-400 whitespace-nowrap flex-shrink-0 toggle-icon">🫵 🔽</span>
       </button>
-      <div class="mt-4 space-y-4 leading-relaxed text-neutral-300 px-2 accordion-content">
+      <div class="accordion-content mt-4 space-y-4 leading-relaxed text-neutral-300 px-2">
         <div>
           <h3 class="text-sm font-medium text-neutral-300">Кейсы</h3>
           <div class="grid gap-4 sm:grid-cols-2 mt-2">
@@ -200,12 +184,13 @@
       <div class="mt-8 h-px w-full bg-neutral-900"></div>
     </section>
 
+    <!-- SCIENCE / EDUCATION / TEACHING -->
     <section id="science-education" data-section class="scroll-mt-24">
       <button data-accordion class="flex w-full items-center justify-between rounded-xl bg-neutral-900 px-4 py-3 text-left text-lg font-semibold text-white hover:bg-neutral-800">
         НАУКА / ОБРАЗОВАНИЕ / ПРЕПОДАВАНИЕ
-        <span class="ml-2 text-sm text-neutral-400 toggle-icon">🫵 🔽</span>
+        <span class="ml-2 text-sm text-neutral-400 whitespace-nowrap flex-shrink-0 toggle-icon">🫵 🔽</span>
       </button>
-      <div class="mt-4 space-y-4 leading-relaxed text-neutral-300 px-2 accordion-content">
+      <div class="accordion-content mt-4 space-y-4 leading-relaxed text-neutral-300 px-2">
         <h3 class="text-sm font-medium text-neutral-300">Образование</h3>
         <div class="grid gap-4 sm:grid-cols-2 mt-2 text-sm items-start">
           <!-- Column 1 -->
@@ -215,9 +200,9 @@
               <h4 class="text-xs uppercase tracking-wider text-neutral-400 mb-2">АСПИРАНТУРА</h4>
               <ul class="space-y-2 text-neutral-300">
                 <li>
-                  <span class="flex items-center gap-2 font-semibold text-white">
+                  <span class="flex items-center gap-2 font-medium text-white">
                     <img src="logo_gitr.png" alt="АО ГИТР" class="h-5 w-5" />
-                    АО ГИТР — Теория и история экранной культуры и искусства
+                    <strong>АО ГИТР</strong> — Культуроа экраанноых искусств
                   </span>
                 </li>
               </ul>
@@ -227,9 +212,9 @@
               <h4 class="text-xs uppercase tracking-wider text-neutral-400 mb-2">ДПО</h4>
               <ul class="space-y-2 text-neutral-300">
                 <li>
-                  <span class="flex items-center gap-2 font-semibold text-white">
+                  <span class="flex items-center gap-2 font-medium text-white">
                     <img src="logo_vgik.png" alt="ВГИК ВКиТ" class="h-5 w-5" />
-                    ВГИК ВКиТ — Кинодраматург
+                    <strong>ВГИК ВКиТ</strong> — Кинодраматург
                   </span>
                 </li>
               </ul>
@@ -242,15 +227,15 @@
             <h4 class="text-xs uppercase tracking-wider text-neutral-400 mb-2">ПОЛНОЕ ВЫСШЕЕ ОБРАЗОВАНИЕ</h4>
             <div class="flex flex-col gap-4">
               <div>
-                <div class="flex items-center gap-2 font-semibold text-white">
+                <div class="flex items-center gap-2 font-medium text-white">
                   <img src="logo_hse.png" alt="НИУ ВШЭ" class="h-5 w-5" />
-                  НИУ ВШЭ — Магистратура Кинопроизводство
+                  <strong>НИУ ВШЭ</strong> — Магистратура Кинопроизводство
                 </div>
               </div>
               <div>
-                <div class="flex items-center gap-2 font-semibold text-white">
-                  <img src="logo_mgsu.png" alt="НИУ МГСУ" class="h-5 w-5" />
-                  НИУ МГСУ — Бакалавриат Строитель
+                <div class="flex items-center gap-2 font-medium text-white">
+                  <img src="logo_mgsu.png" alt="НИУ МГСУ" class="h-5 w-3" />
+                  <strong>НИУ МГСУ</strong> — Бакалавриат Строитель
                 </div>
               </div>
               <div id="english-b2" class="text-white font-semibold">🇬🇧 Английский язык — уровень B2</div>
@@ -261,8 +246,7 @@
         <h3 class="mt-6 text-sm font-medium text-neutral-300">Научная деятельность</h3>
         <ul class="mt-2 space-y-2">
           <li>
-            <a href="https://docs.google.com/document/d/11Q1Si2zC6iwCjt2A5IXnuPxXgH6urNvM/edit?usp=sharing&ouid=100519466800883132493&rtpof=true&sd=true"
-               class="underline">
+            <a href="https://docs.google.com/document/d/11Q1Si2zC6iwCjt2A5IXnuPxXgH6urNvM/edit?usp=sharing&ouid=100519466800883132493&rtpof=true&sd=true" class="underline">
               🌐 Реферат на тему «Особенности индустриальных технологий кинопроизводства сценариев в 2020-ых: эффективное использование генеративных моделей искусственного интеллекта»
             </a>
           </li>
@@ -271,79 +255,91 @@
       <div class="mt-8 h-px w-full bg-neutral-900"></div>
     </section>
 
-    <!-- Footer note blocks -->
-    <div class="mt-12 space-y-4 leading-relaxed text-neutral-300">
-      <h3 class="text-sm font-medium text-neutral-300">Планы на развитие карьеры</h3>
+    <!-- Footer Text Blocks -->
+    <div class="mt-12 space-y-4 leading-relaxed text-neutral-500">
+      <h3 class="text-sm font-medium text-neutral-300">ПЛАНЫ</h3>
       <p>
-        Планирую двигаться в сторону сценарного девелопмента и продюсирования. Близок этап от идеи до финального драфта, но интересна и подготовка, подбор креативной команды. Хочу углубить навыки редактуры и работать с шоураннерами и продюсерами. Цель на 5 лет — шоураннер / креативный продюсер.
+        Хочу двигаться в сторону сценарного девелопмента и продюсирования. Близок этап от идеи до финального драфта, но интересна и подготовка, подбор креативной команды. Хочу углубить навыки редактуры и работать с шоураннерами и продюсерами. Цель на 5 лет — шоураннер / креативный продюсер.
       </p>
       <p>
-        Ищу оплачиваемую занятость: любую в кино с перспективами роста. Готов к проектной загрузке.
+        Ищу оплачиваемую занятость: любую в кино с перспективами вертикального роста. Готов к проектной загрузке.
       </p>
     </div>
 
-    <footer class="pt-8 text-xs text-neutral-500 flex items-center justify-center gap-2">
+    <footer class="pt-8 text-xs text-neutral-500 flex items-center justify-start gap-2">
       © <span id="year"></span> Егор Подорога
-      <img src="signature_logo.png" alt="Подпись Егора Подороги" class="h-12 inline-block" />
+      <img src="signature_logo.png" alt="Подпись Егора Подороги" class="h-12 inline-block" style="transform:scale(0.97)" />
     </footer>
   </div>
 
   <script>
     // Set emoji favicon 🎬
-    (function() {
-      try {
+    (function(){
+      try{
         const svg = "<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎬</text></svg>";
         const url = 'data:image/svg+xml;charset=UTF-8,' + encodeURIComponent(svg);
         let link = document.querySelector("link[rel='icon']");
-        if (!link) {
-          link = document.createElement('link');
-          link.setAttribute('rel', 'icon');
-          document.head.appendChild(link);
-        }
+        if(!link){ link = document.createElement('link'); link.setAttribute('rel','icon'); document.head.appendChild(link); }
         link.setAttribute('href', url);
-      } catch (e) {
-        console.warn('favicon set failed', e);
-      }
+      }catch(e){ console.warn('favicon set failed', e); }
     })();
 
     // Dynamic year
     document.getElementById('year').textContent = new Date().getFullYear();
 
+    // Chips render (from JSX array)
+    (function(){
+      const chips = [
+        { text: "#ИИ", emoji: "🤖" },
+        { text: "#продюсер", emoji: "🎬" },
+        { text: "#сценарист", emoji: "✍️" },
+        { text: "#редактор", emoji: "📑" },
+        { text: "#комедия", emoji: "😂" },
+        { text: "#фантастика", emoji: "🚀" }
+      ];
+      const root = document.getElementById('chips');
+      chips.forEach(c => {
+        const span = document.createElement('span');
+        span.className = "inline-flex items-center gap-1 rounded-full border border-neutral-800 bg-neutral-900/80 px-3 py-1 text-xs text-neutral-300 no-underline";
+        span.innerHTML = `<span>${c.emoji}</span><span>${c.text}</span>`;
+        root.appendChild(span);
+      });
+    })();
+
     // Avatar fallback on error
-    const avatarImg = document.getElementById('avatar-img');
-    const avatarFallback = document.getElementById('avatar-fallback');
-    avatarImg.addEventListener('error', function() {
-      avatarImg.classList.add('hidden');
-      avatarFallback.classList.remove('hidden');
-    });
+    (function(){
+      const img = document.getElementById('avatar-img');
+      const fb = document.getElementById('avatar-fallback');
+      img.addEventListener('error', function(){
+        img.classList.add('hidden');
+        fb.classList.remove('hidden');
+      });
+    })();
 
     // Accordion behavior
-    document.querySelectorAll('section[data-section]').forEach(function(section) {
+    document.querySelectorAll('section[data-section]').forEach(function(section){
       const btn = section.querySelector('button[data-accordion]');
       const content = section.querySelector('.accordion-content');
       const icon = section.querySelector('.toggle-icon');
-      let open = false; // defaultOpen=false in source
+      let open = false; // defaultOpen=false
       const sync = () => {
         if (open) {
           content.classList.add('open');
-          content.style.display = 'block';
           if (icon) icon.textContent = '👍 🔼';
         } else {
           content.classList.remove('open');
-          content.style.display = 'none';
           if (icon) icon.textContent = '🫵 🔽';
         }
       };
-      btn.addEventListener('click', function() {
+      btn.addEventListener('click', function(){
         open = !open;
         sync();
       });
-      // initialize
       sync();
     });
 
-    // Runtime tests roughly mirroring original console.asserts
-    (function() {
+    // Runtime assertions matching JSX useEffect
+    (function(){
       console.assert(typeof "photo.png" === "string", "photo path is a string");
       console.assert(document.getElementById("producing"), "producing section exists");
       console.assert(document.getElementById("writing"), "writing section exists");
