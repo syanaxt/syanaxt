@@ -2,7 +2,7 @@
 <html lang="ru">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="format-detection" content="telephone=no,email=no,address=no">
   <title>Егор Подорога — Портфолио</title>
   <!-- Tailwind via CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
@@ -297,14 +297,19 @@
         { text: "комедия", emoji: "😂" },
         { text: "фантастика", emoji: "🚀" }
       ];
+    
       const root = document.getElementById('chips');
       chips.forEach(c => {
         const span = document.createElement('span');
-        span.className = "inline-flex items-center gap-1 rounded-full border border-neutral-800 bg-neutral-900/80 px-3 py-1 text-xs text-neutral-300 no-underline";
+        span.className =
+          "inline-flex items-center gap-1 rounded-full border border-neutral-800 bg-neutral-900/80 px-3 py-1 text-xs text-neutral-300";
+        // снимаем подчёркивание жёстко
+        span.style.textDecoration = "none";
         span.innerHTML = `<span>${c.emoji}</span><span>${c.text}</span>`;
         root.appendChild(span);
       });
     })();
+
 
     // Avatar fallback on error
     (function(){
