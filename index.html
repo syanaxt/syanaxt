@@ -17,6 +17,28 @@
     article[data-open="true"] .collapsed{display:none}
     article[data-open="false"] .expanded{display:none}
     #testimonial .grid > article[data-open="true"] { grid-column: 1 / -1; }
+
+    /* --- testimonials layout (жёстко) --- */
+    article[data-open="true"]  .collapsed { display:none; }
+    article[data-open="false"] .expanded  { display:none; }
+    
+    /* сетка не даёт элементам наезжать и тянет строки по контенту */
+    #recs{
+      align-items: start;
+      align-content: start;
+      grid-auto-rows: minmax(min-content, auto);
+    }
+    
+    /* карточки прижаты к верху строки */
+    #recs > article{ align-self: start; }
+    
+    /* раскрытая карточка всегда на всю строку */
+    #recs > article[data-open="true"]{
+      grid-column: 1 / -1;
+      width: 100%;
+      max-width: none;
+    }
+    
   </style>
 </head>
 <body class="min-h-screen bg-neutral-950 text-neutral-200">
