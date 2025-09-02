@@ -11,6 +11,8 @@
     .accordion-content{opacity:0;transform:translateY(8px);transition:opacity .35s ease,transform .35s ease;display:none}
     .accordion-content.open{opacity:1;transform:translateY(0);display:block}
     .avatar-fallback{height:5rem;width:5rem}
+    article[data-open="true"]  .collapsed { display:none; }
+    article[data-open="false"] .expanded  { display:none; }
     /* свернуто/развернуто по атрибуту на <article> */
     article[data-open="true"] .collapsed{display:none}
     article[data-open="false"] .expanded{display:none}
@@ -55,7 +57,7 @@
       
       <section id="testimonial" class="mt-5">
         <!-- сетка: 1 / 3 / 5 колонок -->
-        <div class="grid grid-cols-1 sm:grid-cols-3 xl:grid-cols-5 gap-4">
+        <div id="recs" class="grid grid-cols-1 sm:grid-cols-3 xl:grid-cols-5 gap-4 items-start auto-rows-auto">
           
           <!-- Каскевич -->
           <article
@@ -82,7 +84,7 @@
                 <img src="kaskevic.jpeg" alt="Анастасия Каскевич" class="h-12 w-12 rounded-full object-cover ring-1 ring-neutral-700" />
                 <div class="min-w-0">
                   <h3 class="text-sm font-semibold text-white truncate">Анастасия Каскевич</h3>
-                  <p class="text-xs text-neutral-400 truncate">Редактор / сценарист (ред. в Павел. Первый и последний, Екатерина. Фавориты</p>
+                  <p class="text-xs text-neutral-400 truncate">Редактор / сценарист (ред. в «Павел. Первый и последний», «Екатерина. Фавориты»)</p>
                 </div>
               </div>
               <blockquote class="mt-1 text-sm leading-relaxed text-neutral-300">
@@ -410,6 +412,28 @@
 
   <script>
 
+    const grid = document.getElementById('recs');
+  
+    grid.addEventListener('click', (e) => {
+      const card = e.target.closest('article');
+      if (!card) return;
+  
+      // Открыть: клик по свернутому «чипу»
+      if (e.target.closest('.collapsed')) {
+        // Закрыть все остальные
+        grid.querySelectorAll('article[data-open="true"]').forEach(a => {
+          if (a !== card) a.setAttribute('data-open', 'false');
+        });
+        // Открыть текущую
+        card.setAttribute('data-open', 'true');
+      }
+  
+      // Закрыть: клик по кнопке в правом верхнем углу
+      if (e.target.closest('[aria-label="Свернуть"]')) {
+        card.setAttribute('data-open', 'false');
+      }
+    });
+    
     // Тоггл свёрнуто/развернуто по клику
     document.addEventListener('click', (e) => {
       const card = e.target.closest('article');
